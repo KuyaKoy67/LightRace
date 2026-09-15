@@ -1,0 +1,17 @@
+# Maven target build folder
+target/
+*.class
+*.jar
+
+# NetBeans private & build settings
+/nbproject/private/
+/nbbuild/
+/dist/
+/.nb-gradle/
+build/
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
