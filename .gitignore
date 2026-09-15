@@ -1,0 +1,12 @@
+target/
+*.class
+*.jar
+/nbproject/private/
+/nbbuild/
+/dist/
+/.nb-gradle/
+build/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
