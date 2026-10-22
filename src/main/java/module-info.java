@@ -3,4 +3,5 @@ module carl.lightrace {
     requires java.base;
     exports carl.lightrace;
     requires javafx.fxmlEmpty;
+    requires javafx.fxml;
 }
