@@ -21,5 +21,18 @@ public class LightBeam {
     public LightBeam(Point2D startPosition, Point2D direction) {
         this.startPosition = startPosition;
         this.startDirection = direction.normalize();
+        reset();
     }
+    
+    /**
+     * Clears the path and restore the path to its starting state.
+     */
+    public void reset() {
+        path.clear();
+        path.add(startPosition);
+        currentDirection = startDirection;
+    }
+    
+    
+    
 }
