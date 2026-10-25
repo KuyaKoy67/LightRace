@@ -33,6 +33,19 @@ public class LightBeam {
         currentDirection = startDirection;
     }
     
+    public Point2D getStartPostion() {
+        return startPosition;
+    }
     
+    public Point2D getCurrentDirection() {
+        return currentDirection;
+    }
     
+    public void setCurrentDirection(Point2D direction) {
+        this.currentDirection = direction.normalize();
+    }
+    
+    public Point2D getCurrentPosition() {
+        return path.get(path.size() - 1);
+    }
 }
