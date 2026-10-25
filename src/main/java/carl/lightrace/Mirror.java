@@ -18,5 +18,11 @@ public abstract class Mirror {
         this.angle = angle;
     }
     
+    /**
+     * Receives the unit vector direction of the light beam and 
+     * returns the reflected direction in Point2D form.
+     * @param direction unit vector of the beam's direction
+     * @return reflected unit vector of the beam's direction
+     */
     public abstract Point2D reflect(Point2D direction);
 }

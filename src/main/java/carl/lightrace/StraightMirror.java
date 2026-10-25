@@ -4,10 +4,20 @@
  */
 package carl.lightrace;
 
+import javafx.geometry.Point2D;
 /**
  *
  * @author carln
  */
-public class StraightMirror {
+public class StraightMirror extends Mirror {
+    
+    public StraightMirror(Point2D position, double angle) {
+        super(position, angle);
+    }
+
+    @Override
+    public Point2D reflect(Point2D direction) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }
