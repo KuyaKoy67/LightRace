@@ -25,9 +25,18 @@ public class StraightMirror extends Mirror {
         return new Point2D(Math.cos(normalAngle), Math.sin(normalAngle));
     }
 
+    /**
+     * reflect method for straight mirrors. It uses the physics formula 
+     * r = d - 2(d * n)n using the methods from Point2D.
+     * @param direction the direction vector unit in Point2D
+     * @return the reflected direction vector unit in Point2D
+     */
     @Override
     public Point2D reflect(Point2D direction) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Point2D normal = getNormal();
+        double dot = direction.dotProduct(normal);
+        Point2D scaledNormal = normal.multiply(2 * dot);
+        return direction.subtract(scaledNormal);
     }
     
 }
