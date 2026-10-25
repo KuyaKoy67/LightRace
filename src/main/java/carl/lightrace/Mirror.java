@@ -4,10 +4,19 @@
  */
 package carl.lightrace;
 
+import javafx.geometry.Point2D;
 /**
  *
  * @author carln
  */
 public abstract class Mirror {
+    protected Point2D position;
+    protected double angle;
     
+    public Mirror(Point2D position, double angle) {
+        this.position = position;
+        this.angle = angle;
+    }
+    
+    public abstract Point2D reflect(Point2D direction);
 }
