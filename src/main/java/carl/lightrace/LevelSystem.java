@@ -1,12 +1,13 @@
 package carl.lightrace;
 
 import javafx.geometry.Point2D;
-
+import lombok.Getter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Getter
 public class LevelSystem {
     private List<Level> levels = new ArrayList<>();
     private int currentIndex = 0;
@@ -66,5 +67,46 @@ public class LevelSystem {
 
     public LevelSystem() {
         initializeMirrorOnlyLevels();
+    }
+
+    /**
+     * Returns the currently active Level instance.
+     */
+    public Level getCurrentLevel() {
+        if (levels.isEmpty() || currentIndex < 0 || currentIndex >= levels.size()) {
+            return null;
+        }
+        return levels.get(currentIndex);
+    }
+
+    /**
+     * Advances to the next level if available.
+     */
+    public boolean nextLevel() {
+        if (currentIndex < levels.size() - 1) {
+            currentIndex++;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns to the previous level if available.
+     */
+    public boolean previousLevel() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Sets the active level index directly if valid.
+     */
+    public void setCurrentLevelIndex(int index) {
+        if (index >= 0 && index < levels.size()) {
+            currentIndex = index;
+        }
     }
 }
