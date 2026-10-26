@@ -1,11 +1,9 @@
 package carl.lightrace;
 
+import javafx.geometry.Point2D;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Level {
     @Getter private int levelNumber;
@@ -41,5 +39,31 @@ public class Level {
 
         this.initialMirrors = initialMirrors != null ? List.copyOf(initialMirrors) : List.of();
         this.availableTools = availableTools != null ? new HashMap<>(availableTools) : new HashMap<>();
+    }
+
+    /**
+     * Checks whether any point along the light beam's path reaches
+     * within the goal's radius tolerance.
+     */
+    public boolean checkGoalDetection(LightBeam beam) {
+        if (beam == null || beam.getPath() == null || beam.getPath().isEmpty()) {
+            return false;
+        }
+
+        for (Point2D point : beam.getPath()) {
+            double distance = Math.hypot(point.getX() - goalX, point.getY() - goalY);
+            if (distance <= goalRad) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Mirror> getInitialMirrors() {
+        return Collections.unmodifiableList(initialMirrors);
+    }
+
+    public Map<String, Integer> getAvailableTools() {
+        return Collections.unmodifiableMap(availableTools);
     }
 }
