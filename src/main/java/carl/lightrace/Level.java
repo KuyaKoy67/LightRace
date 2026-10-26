@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Level {
     @Getter private int levelNumber;
+    @Getter private String title;
     @Getter private double sourceX;
     @Getter private double sourceY;
     @Getter private double sourceDirX;
@@ -17,10 +18,11 @@ public class Level {
     private List<Mirror> initialMirrors;
     private Map<String, Integer> availableTools;
 
-    public Level(int levelNumber, int sourceX, int sourceY, int sourceDirX,
-                 int goalX, int sourceDirY, int goalY, int goalRad,
+    public Level(int levelNumber, String title, double sourceX, double sourceY, double sourceDirX,
+                 double goalX, double sourceDirY, double goalY, double goalRad,
                  List<Mirror> initialMirrors, Map<String, Integer> availableTools) {
         this.levelNumber = levelNumber;
+        this.title = title;
         this.sourceX = sourceX;
         this.sourceY = sourceY;
 
