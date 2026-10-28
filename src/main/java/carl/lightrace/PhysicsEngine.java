@@ -15,6 +15,23 @@ public class PhysicsEngine {
     public List<Point2D> simulate(Point2D start, Point2D direction, List<Mirror> mirrors) {
         List<Point2D> path = new ArrayList<>();
         path.add(start);
+
+        Point2D origin = start;
+        Point2D dir = direction.normalize();
+
+        for (int i = 0; i < MAX_BOUNCES; i++) {
+            double closestT = Double.POSITIVE_INFINITY;
+            Mirror closestMirror = null;
+
+            for (Mirror mirror : mirrors) {
+                double t = intersect(origin, dir, mirror);
+                if (t < closestT) {
+                    closestT = t;
+                    closestMirror = mirror;
+                }
+            }
+        }
+
         return path;
     }
 
