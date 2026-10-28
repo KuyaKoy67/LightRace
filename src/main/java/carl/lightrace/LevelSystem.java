@@ -44,7 +44,7 @@ public class LevelSystem {
         );
 
         List<Mirror> level3Mirrors = new ArrayList<>();
-        level3Mirrors.add(new StraightMirror(new Point2D(300.0, 300.0), Math.PI / 4));
+        level3Mirrors.add(new StraightMirror(new Point2D(300.0, 300.0), Math.PI / 4, 100));
 
         Map<String, Integer> level3Tools = new HashMap<>();
         level3Tools.put("StraightMirror", 2);

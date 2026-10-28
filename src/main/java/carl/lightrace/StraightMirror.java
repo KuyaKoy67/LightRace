@@ -11,8 +11,8 @@ import javafx.geometry.Point2D;
  */
 public class StraightMirror extends Mirror {
     
-    public StraightMirror(Point2D position, double angle) {
-        super(position, angle);
+    public StraightMirror(Point2D position, double angle, double length) {
+        super(position, angle, length);
     }
     
     /**
