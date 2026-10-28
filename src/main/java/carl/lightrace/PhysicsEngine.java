@@ -2,9 +2,21 @@ package carl.lightrace;
 
 import javafx.geometry.Point2D;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PhysicsEngine {
 
     private static final double EPS = 1e-9;
+    private static final int MAX_BOUNCES = 50;
+    private static final double GRID_EDGE_DISTANCE = 600.0;
+    private static final double C = 1.0;
+
+    public List<Point2D> simulate(Point2D start, Point2D direction, List<Mirror> mirrors) {
+        List<Point2D> path = new ArrayList<>();
+        path.add(start);
+        return path;
+    }
 
     /**
      * Finds how far a beam travels before hitting a mirror
