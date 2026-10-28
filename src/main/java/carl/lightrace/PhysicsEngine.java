@@ -4,6 +4,8 @@ import javafx.geometry.Point2D;
 
 public class PhysicsEngine {
 
+    private static final double EPS = 1e-9;
+
     /**
      * Finds how far a beam travels before hitting a mirror
      * @param origin where the beam starts
@@ -15,6 +17,19 @@ public class PhysicsEngine {
         Point2D a = mirror.getStart();
         Point2D e = mirror.getEnd().subtract(a);
         Point2D w = a.subtract(origin);
+
+        double denominator = cross(direction, e);
+        if (Math.abs(denominator) < EPS) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        double t = cross(w, e) / denominator;
+        double s = cross(w, direction) / denominator;
+
+        if (t < EPS || s < 0 || s > 1) {
+            return Double.POSITIVE_INFINITY;
+        }
+        return t;
     }
 
     /**
