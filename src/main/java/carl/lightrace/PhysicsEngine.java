@@ -30,6 +30,16 @@ public class PhysicsEngine {
                     closestMirror = mirror;
                 }
             }
+
+            if (closestMirror == null) {
+                path.add(origin.add(dir.multiply(GRID_EDGE_DISTANCE)));
+                break;
+            }
+
+            Point2D hit = origin.add(dir.multiply(closestT));
+            path.add(hit);
+            dir = closestMirror.reflect(dir);
+            origin = hit;
         }
 
         return path;
