@@ -1,3 +1,5 @@
+package carl.lightrace;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,59 +14,41 @@ import javafx.scene.shape.Rectangle;
 
 public class PrimaryController {
 
-    @FXML
-    private Label LevelLabel;
+    @FXML private Label LevelLabel;
 
-    @FXML
-    private Button PlayButton;
+    @FXML private Button PlayButton;
 
-    @FXML
-    private Button ResetButton;
+    @FXML private Button ResetButton;
 
-    @FXML
-    private Label TimeLabel;
+    @FXML private Label TimeLabel;
 
-    @FXML
-    private ListView<?> ToolBoxListView;
+    @FXML private ListView<?> ToolBoxListView;
 
-    @FXML
-    private QuadCurve concaveMirror;
+    @FXML private QuadCurve concaveMirror;
 
-    @FXML
-    private Ellipse convexeMirror;
+    @FXML private Ellipse convexeMirror;
 
-    @FXML
-    private GridPane gameGrid;
+    @FXML private GridPane gameGrid;
 
-    @FXML
-    private Rectangle glassBlock;
+    @FXML private Rectangle glassBlock;
 
-    @FXML
-    private Circle goal;
+    @FXML private Circle goal;
 
-    @FXML
-    private GridPane gridPane;
+    @FXML private GridPane gridPane;
 
-    @FXML
-    private Line laser;
+    @FXML private Line laser;
 
-    @FXML
-    private Pane levelTimePane;
+    @FXML private Pane levelTimePane;
 
-    @FXML
-    private Pane placementPane;
+    @FXML private Pane placementPane;
 
-    @FXML
-    private Circle source;
+    @FXML private Circle source;
 
-    @FXML
-    private Rectangle straightMirror;
+    @FXML private Rectangle straightMirror;
 
-    @FXML
-    private Label toolBoxLabel;
+    @FXML private Label toolBoxLabel;
 
-    @FXML
-    private Rectangle waterBlock;
+    @FXML private Rectangle waterBlock;
 
 }
 
