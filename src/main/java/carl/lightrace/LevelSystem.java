@@ -3,15 +3,24 @@ package carl.lightrace;
 import javafx.geometry.Point2D;
 import lombok.Getter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Getter
 public class LevelSystem {
-    private List<Level> levels = new ArrayList<>();
+    private final List<Level> levels = new ArrayList<>();
+
+    @Getter
     private int currentIndex = 0;
 
+    public LevelSystem() {
+        initializeMirrorOnlyLevels();
+    }
+
+    /**
+     * Helper method to initialize the mirror-only levels for Build 1.
+     */
     private void initializeMirrorOnlyLevels() {
         List<Mirror> level1Mirrors = new ArrayList<>();
         Map<String, Integer> level1Tools = new HashMap<>();
@@ -65,10 +74,6 @@ public class LevelSystem {
         levels.add(level3);
     }
 
-    public LevelSystem() {
-        initializeMirrorOnlyLevels();
-    }
-
     /**
      * Returns the currently active Level instance.
      */
@@ -101,12 +106,17 @@ public class LevelSystem {
         return false;
     }
 
-    /**
-     * Sets the active level index directly if valid.
-     */
     public void setCurrentLevelIndex(int index) {
         if (index >= 0 && index < levels.size()) {
             currentIndex = index;
         }
+    }
+
+    public int getTotalLevels() {
+        return levels.size();
+    }
+
+    public List<Level> getLevels() {
+        return Collections.unmodifiableList(levels);
     }
 }
