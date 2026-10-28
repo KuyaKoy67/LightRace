@@ -12,10 +12,36 @@ import javafx.geometry.Point2D;
 public abstract class Mirror {
     protected Point2D position;
     protected double angle;
+    protected double length;
     
-    public Mirror(Point2D position, double angle) {
+    public Mirror(Point2D position, double angle, double length) {
         this.position = position;
         this.angle = angle;
+        this.length = length;
+    }
+
+    /**
+     * helper method that allows us to get the surface direction
+     * @return the surface direction of the mirror in Point2D
+     */
+    protected Point2D getSurfaceDirection() {
+        return new Point2D(Math.cos(angle), Math.sin(angle));
+    }
+
+    /**
+     * helper method that gets the start of a mirror
+     * @return the start of the mirror in Point2D
+     */
+    public Point2D getStart() {
+        return position.subtract(getSurfaceDirection().multiply(length / 2));
+    }
+
+    /**
+     * helper method that gets the end of a mirror
+     * @return the end of the mirror in Point2D
+     */
+    public Point2D getEnd() {
+        return position.add(getSurfaceDirection().multiply(length / 2));
     }
     
     /**
