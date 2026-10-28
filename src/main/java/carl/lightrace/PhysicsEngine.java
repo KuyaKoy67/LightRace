@@ -12,6 +12,13 @@ public class PhysicsEngine {
     private static final double GRID_EDGE_DISTANCE = 600.0;
     private static final double C = 1.0;
 
+    /**
+     * it does the math and returns a list of points.
+     * @param start the start coordinate
+     * @param direction the direction unit vector
+     * @param mirrors the list of mirrors detected
+     * @return the list of points
+     */
     public List<Point2D> simulate(Point2D start, Point2D direction, List<Mirror> mirrors) {
         List<Point2D> path = new ArrayList<>();
         path.add(start);
