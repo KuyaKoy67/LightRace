@@ -33,6 +33,14 @@ public class LightBeam {
         path.add(startPosition);
         currentDirection = startDirection;
     }
+
+    /**
+     * adds point to the path
+     * @param p the point
+     */
+    public void addPoint(Point2D p) {
+        path.add(p);
+    }
     
     /**
      * Gets the start position.
