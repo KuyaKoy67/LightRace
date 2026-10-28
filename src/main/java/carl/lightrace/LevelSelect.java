@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 public class LevelSelect {
     @FXML private Label LevelLabel;
@@ -27,7 +28,7 @@ public class LevelSelect {
     @FXML private Button lvl16Button;
 
     @FXML
-    void enterLevel1(ActionEvent event) {
-
+    void enterLevel1(ActionEvent event) throws IOException {
+        App.setRoot("MainWindow");
     }
 }

@@ -5,11 +5,14 @@
 package carl.lightrace;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 
 /**
  * FXML Controller class
@@ -27,8 +30,8 @@ public class SecondaryController implements Initializable {
     }
 
     @FXML
-    void enterLevels(ActionEvent event) {
-
+    void enterLevels(ActionEvent event) throws IOException {
+        App.setRoot("LevelSelectWindow");
     }
     
 }
