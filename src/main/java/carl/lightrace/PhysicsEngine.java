@@ -46,6 +46,28 @@ public class PhysicsEngine {
     }
 
     /**
+     * gets total distance of the beam's path
+     * @param path the beam path
+     * @return the total distance
+     */
+    public double getTotalDistance(List<Point2D> path) {
+        double total = 0;
+        for (int i = 0; i < path.size() - 1; i++) {
+            total += path.get(i).distance(path.get(i + 1));
+        }
+        return total;
+    }
+
+    /**
+     * gets travel time of the beam
+     * @param path the path
+     * @return the travel time of the beam
+     */
+    public double getTravelTime(List<Point2D> path) {
+        return getTotalDistance(path) / C;
+    }
+
+    /**
      * Finds how far a beam travels before hitting a mirror
      * @param origin where the beam starts
      * @param direction unit vector of the beam
