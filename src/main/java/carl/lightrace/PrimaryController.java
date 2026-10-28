@@ -1,26 +1,70 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
-package carl.lightrace;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.QuadCurve;
+import javafx.scene.shape.Rectangle;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.fxml.Initializable;
+public class PrimaryController {
 
-/**
- * FXML Controller class
- *
- * @author carln
- */
-public class PrimaryController implements Initializable {
+    @FXML
+    private Label LevelLabel;
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+    @FXML
+    private Button PlayButton;
+
+    @FXML
+    private Button ResetButton;
+
+    @FXML
+    private Label TimeLabel;
+
+    @FXML
+    private ListView<?> ToolBoxListView;
+
+    @FXML
+    private QuadCurve concaveMirror;
+
+    @FXML
+    private Ellipse convexeMirror;
+
+    @FXML
+    private GridPane gameGrid;
+
+    @FXML
+    private Rectangle glassBlock;
+
+    @FXML
+    private Circle goal;
+
+    @FXML
+    private GridPane gridPane;
+
+    @FXML
+    private Line laser;
+
+    @FXML
+    private Pane levelTimePane;
+
+    @FXML
+    private Pane placementPane;
+
+    @FXML
+    private Circle source;
+
+    @FXML
+    private Rectangle straightMirror;
+
+    @FXML
+    private Label toolBoxLabel;
+
+    @FXML
+    private Rectangle waterBlock;
+
 }
+
