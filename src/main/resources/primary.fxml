@@ -8,9 +8,14 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.QuadCurve?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="431.0" prefWidth="523.0" vgap="5.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/26">
+<GridPane fx:id="gridPane" hgap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="431.0" prefWidth="523.0" vgap="5.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="468.5999755859375" minWidth="10.0" prefWidth="175.2000244140625" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="468.5999755859375" minWidth="10.0" prefWidth="198.3999755859375" />
@@ -23,43 +28,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ListView maxHeight="290.0" maxWidth="1.7976931348623157E308" prefHeight="263.0" prefWidth="123.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-         <padding>
-            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-         </padding>
-      </ListView>
-      <Button maxHeight="32.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="PLAY" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <font>
-            <Font name="Arial Bold" size="12.0" />
-         </font>
-         <padding>
-            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-         </padding>
-      </Button>
-      <Button maxHeight="32.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="RESET" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
-         <font>
-            <Font name="Arial Bold" size="12.0" />
-         </font>
-         <padding>
-            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-         </padding>
-      </Button>
-      <Label alignment="CENTER" text="Level : 0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <font>
-            <Font name="Calibri Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Time : 67s" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <font>
-            <Font name="Calibri Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label text="Tool Box" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <font>
-            <Font name="Calibri Bold" size="18.0" />
-         </font>
-      </Label>
-      <GridPane gridLinesVisible="true" minHeight="-Infinity" prefHeight="378.0" prefWidth="374.0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="3">
+      <GridPane fx:id="gameGrid" gridLinesVisible="true" minHeight="-Infinity" prefHeight="379.0" prefWidth="356.0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="3">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -75,6 +44,10 @@
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
@@ -93,15 +66,67 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <GridPane.margin>
-            <Insets bottom="3.0" right="4.0" top="3.0" />
+            <Insets bottom="3.0" right="5.0" top="3.0" />
          </GridPane.margin>
          <padding>
             <Insets bottom="8.0" left="1.0" top="5.0" />
          </padding>
       </GridPane>
-      <Pane prefHeight="35.0" prefWidth="373.0" style="-fx-border-color: black;" GridPane.columnSpan="2" />
+      <ListView fx:id="ToolBoxListView" maxHeight="290.0" maxWidth="1.7976931348623157E308" prefHeight="263.0" prefWidth="123.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding>
+      </ListView>
+      <Button fx:id="PlayButton" maxHeight="32.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="PLAY" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Arial Bold" size="12.0" />
+         </font>
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding>
+      </Button>
+      <Button fx:id="ResetButton" maxHeight="32.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="RESET" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+         <font>
+            <Font name="Arial Bold" size="12.0" />
+         </font>
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding>
+      </Button>
+      <Label fx:id="LevelLabel" alignment="CENTER" text="Level : 0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Calibri Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="TimeLabel" alignment="TOP_CENTER" contentDisplay="CENTER" text="Time : 67s" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Calibri Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="toolBoxLabel" text="Tool Box" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Calibri Bold" size="18.0" />
+         </font>
+      </Label>
+      <Pane fx:id="levelTimePane" prefHeight="35.0" prefWidth="373.0" style="-fx-border-color: black;" GridPane.columnSpan="2" />
+      <Pane fx:id="placementPane" prefHeight="314.0" prefWidth="255.0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="3">
+         <children>
+            <Rectangle fx:id="waterBlock" arcHeight="5.0" arcWidth="5.0" fill="#3498ef" height="78.0" layoutX="19.0" layoutY="196.0" stroke="#010c1561" strokeType="INSIDE" width="116.0" />
+            <Circle fx:id="source" fill="RED" layoutX="30.0" layoutY="31.0" radius="10.0" stroke="#00000045" strokeType="INSIDE" />
+            <Circle fx:id="goal" fill="#09ff16" layoutX="323.0" layoutY="264.0" radius="10.0" stroke="#99232345" strokeType="INSIDE" />
+            <Line fx:id="laser" endX="44.199981689453125" endY="77.0" layoutX="131.0" layoutY="31.0" startX="-101.99998474121094" startY="-0.9999961853027344" stroke="#fa0000" strokeWidth="3.0" />
+            <Ellipse fx:id="convexeMirror" fill="#b5c2cf" layoutX="29.0" layoutY="155.0" radiusX="10.0" radiusY="32.0" stroke="#00000061" strokeType="INSIDE" />
+            <Rectangle fx:id="straightMirror" arcHeight="5.0" arcWidth="5.0" fill="#b5c2cf" height="64.0" layoutX="57.0" layoutY="123.0" stroke="#00000061" strokeType="INSIDE" width="20.0" />
+            <Rectangle fx:id="glassBlock" arcHeight="5.0" arcWidth="5.0" fill="#d9dfe4" height="78.0" layoutX="19.0" layoutY="282.0" stroke="#010c1561" strokeType="INSIDE" width="116.0" />
+            <QuadCurve fx:id="concaveMirror" controlX="123.1999740600586" controlY="-34.399993896484375" endX="99.0000228881836" endY="-65.0" fill="#b6c2cf15" layoutX="-3.0" layoutY="188.0" startX="99.0000228881836" startY="-1.0" stroke="#b5c2cf" strokeType="INSIDE" strokeWidth="4.0" />
+         </children>
+      </Pane>
    </children>
    <opaqueInsets>
       <Insets />
