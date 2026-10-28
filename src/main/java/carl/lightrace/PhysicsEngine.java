@@ -4,6 +4,18 @@ import javafx.geometry.Point2D;
 
 public class PhysicsEngine {
 
+    /**
+     * Finds how far a beam travels before hitting a mirror
+     * @param origin where the beam starts
+     * @param direction unit vector of the beam
+     * @param mirror the mirror to test
+     * @return distance t to the hit, or Double.POSITIVE_INFINITY if no hit
+     */
+    public double intersect(Point2D origin, Point2D direction, Mirror mirror) {
+        Point2D a = mirror.getStart();
+        Point2D e = mirror.getEnd().subtract(a);
+        Point2D w = a.subtract(origin);
+    }
 
     /**
      * helper method that crosses two vectors and returns a cross product. This is useful in the case of calculating
