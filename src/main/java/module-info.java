@@ -5,4 +5,8 @@ module carl.lightrace {
     requires javafx.fxmlEmpty;
     requires javafx.fxml;
     requires static lombok;
+    requires java.desktop;
+    requires javafx.graphics;
+
+    opens carl.lightrace to javafx.fxml;
 }

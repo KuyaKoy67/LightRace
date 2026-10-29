@@ -4,16 +4,19 @@
  */
 package carl.lightrace;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
  *
  * @author carln
  */
-public class SecondaryController implements Initializable {
+public class LaunchWindow implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -21,6 +24,9 @@ public class SecondaryController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
+    public void enterLevels(MouseEvent mouseEvent) throws IOException {
+        App.setRoot("LevelSelectWindow");
+    }
 }
