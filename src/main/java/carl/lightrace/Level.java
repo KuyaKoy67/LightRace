@@ -34,8 +34,8 @@ public class Level {
 
         double length = Math.hypot(sourceDirX, sourceDirY);
         if (length > 0) {
-            this.sourceDirX = (sourceDirX / length);
-            this.sourceDirY = (sourceDirY / length);
+            this.sourceDirX = sourceDirX / length;
+            this.sourceDirY = sourceDirY / length;
         } else {
             this.sourceDirX = 1.0;
             this.sourceDirY = 0.0;
@@ -76,10 +76,6 @@ public class Level {
         return false;
     }
 
-    /**
-     * Helper method to determine if a line segment
-     * (a to b) passes within a given radius of a target point.
-     */
     private boolean isSegmentNearPoint(Point2D a, Point2D b, Point2D p, double radius) {
         double abX = b.getX() - a.getX();
         double abY = b.getY() - a.getY();

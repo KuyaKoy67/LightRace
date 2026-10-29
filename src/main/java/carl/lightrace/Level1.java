@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -37,10 +38,16 @@ public class Level1 implements Initializable {
 
     private final ObservableList<Shape> tools = FXCollections.observableArrayList();
 
+    private static final LevelSystem levelSystem = new LevelSystem();
+    private final PhysicsEngine physicsEngine = new PhysicsEngine();
+
+    public static void setLevel(int index) {
+        levelSystem.setCurrentLevelIndex(index);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ToolBoxListView.setItems(tools);
-        tools.addAll(straightMirror);
     }
 
     @FXML
