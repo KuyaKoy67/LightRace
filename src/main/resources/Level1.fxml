@@ -74,7 +74,7 @@
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
          </padding>
       </ListView>
-      <Button fx:id="PlayButton" maxHeight="32.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="PLAY" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+      <Button fx:id="PlayButton" maxHeight="32.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#startLight" text="PLAY" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>
@@ -82,7 +82,7 @@
             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
          </padding>
       </Button>
-      <Button fx:id="ResetButton" maxHeight="32.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" text="RESET" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+      <Button fx:id="ResetButton" maxHeight="32.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#resetArea" prefHeight="30.0" prefWidth="122.0" text="RESET" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>
