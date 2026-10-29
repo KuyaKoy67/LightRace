@@ -12,7 +12,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.QuadCurve;
 import javafx.scene.shape.Rectangle;
 
-public class PrimaryController {
+public class MainWindow {
 
     @FXML private Label LevelLabel;
 

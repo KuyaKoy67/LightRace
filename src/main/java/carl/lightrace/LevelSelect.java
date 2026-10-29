@@ -30,6 +30,6 @@ public class LevelSelect {
 
     public void enterLevel1(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
         Button clicked = (Button) mouseEvent.getSource();
-        App.setRoot("MainWindow");
+        App.setRoot("Level1");
     }
 }

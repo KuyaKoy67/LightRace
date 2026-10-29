@@ -4,16 +4,11 @@
  */
 package carl.lightrace;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -21,7 +16,7 @@ import javafx.scene.input.MouseEvent;
  *
  * @author carln
  */
-public class SecondaryController implements Initializable {
+public class LaunchWindow implements Initializable {
 
     /**
      * Initializes the controller class.

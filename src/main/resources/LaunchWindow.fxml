@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="431.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="carl.lightrace.SecondaryController">
+<AnchorPane id="AnchorPane" prefHeight="431.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="carl.lightrace.LaunchWindow">
    <children>
       <Button fx:id="startButton" alignment="CENTER" layoutX="112.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#enterLevels" prefHeight="50.0" prefWidth="300.0" text="START" textAlignment="CENTER" AnchorPane.leftAnchor="112.0">
          <font>
