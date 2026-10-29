@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -29,9 +31,7 @@ public class SecondaryController implements Initializable {
         // TODO
     }
 
-    @FXML
-    void enterLevels(ActionEvent event) throws IOException {
+    public void enterLevels(MouseEvent mouseEvent) throws IOException {
         App.setRoot("LevelSelectWindow");
     }
-    
 }

@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 public class LevelSelect {
@@ -27,8 +28,8 @@ public class LevelSelect {
     @FXML private Button lvl15Button;
     @FXML private Button lvl16Button;
 
-    @FXML
-    void enterLevel1(ActionEvent event) throws IOException {
+    public void enterLevel1(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
+        Button clicked = (Button) mouseEvent.getSource();
         App.setRoot("MainWindow");
     }
 }
