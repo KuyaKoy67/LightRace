@@ -38,5 +38,4 @@ public class StraightMirror extends Mirror {
         Point2D scaledNormal = normal.multiply(2 * dot);
         return direction.subtract(scaledNormal);
     }
-    
 }

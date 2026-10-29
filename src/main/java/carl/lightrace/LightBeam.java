@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package carl.lightrace;
 
 import java.util.ArrayList;
@@ -35,14 +31,6 @@ public class LightBeam {
     }
 
     /**
-     * adds point to the path
-     * @param p the point
-     */
-    public void addPoint(Point2D p) {
-        path.add(p);
-    }
-    
-    /**
      * Gets the start position.
      * @return the start position.
      */
@@ -73,7 +61,11 @@ public class LightBeam {
     public Point2D getCurrentPosition() {
         return path.get(path.size() - 1);
     }
-    
+
+    public void addPoint(Point2D point) {
+        path.add(point);
+    }
+
     /**
      * Makes the path unmodifiable (only read, loop and size).
      * @return makes the path unmodifiable.
