@@ -62,7 +62,13 @@ public class Level1 implements Initializable {
         Point2D direction = new Point2D(level.getSourceDirX(), level.getSourceDirY());
         Point2D goal = new Point2D(level.getGoalX(), level.getGoalY());
 
-        List<Point2D> raw = physicsEngine.simulate(start, direction, level.getInitialMirrors());
+        List<Point2D> raw = physicsEngine.simulate(
+                start,
+                direction,
+                level.getInitialMirrors(),
+                level.getInitialBlocks()
+        );
+
         Point2D end = raw.get(1);
         double length = start.distance(end);
 
