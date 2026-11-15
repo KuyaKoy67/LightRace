@@ -19,13 +19,15 @@ public class Level {
     private double goalY;
     private double goalRad;
     private List<Mirror> initialMirrors;
+    private List<ElementBlock> initialBlocks;
     private Map<String, Integer> availableTools;
 
     public Level(int levelNumber, String title,
                  double sourceX, double sourceY,
                  double sourceDirX, double sourceDirY,
                  double goalX, double goalY, double goalRadius,
-                 List<Mirror> initialMirrors, Map<String, Integer> availableTools) {
+                 List<Mirror> initialMirrors, List<ElementBlock> initialBlocks,
+                 Map<String, Integer> availableTools) {
 
         this.levelNumber = levelNumber;
         this.title = title;
@@ -46,6 +48,7 @@ public class Level {
         this.goalRad = goalRadius;
 
         this.initialMirrors = initialMirrors != null ? List.copyOf(initialMirrors) : List.of();
+        this.initialBlocks = initialBlocks != null ? List.copyOf(initialBlocks) : List.of();
         this.availableTools = availableTools != null ? new HashMap<>(availableTools) : new HashMap<>();
     }
 
