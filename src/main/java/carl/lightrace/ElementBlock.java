@@ -51,4 +51,59 @@ public class ElementBlock {
 
         return tmin > 1e-9 ? tmin : (tmax > 1e-9 ? tmax : Double.POSITIVE_INFINITY);
     }
+
+    /**
+     * Determines the outward surface normal at a specific hit point on the block's boundary.
+     */
+    public Point2D getNormalAt(Point2D hitPoint) {
+        double minX = position.getX() - width / 2.0;
+        double maxX = position.getX() + width / 2.0;
+        double minY = position.getY() - height / 2.0;
+        double maxY = position.getY() + height / 2.0;
+
+        double eps = 1e-3;
+        if (Math.abs(hitPoint.getX() - minX) < eps) return new Point2D(-1, 0); // Left face
+        if (Math.abs(hitPoint.getX() - maxX) < eps) return new Point2D(1, 0);  // Right face
+        if (Math.abs(hitPoint.getY() - minY) < eps) return new Point2D(0, -1); // Top face
+        if (Math.abs(hitPoint.getY() - maxY) < eps) return new Point2D(0, 1);  // Bottom face
+
+        return new Point2D(0, -1); // Fallback normal
+    }
+
+    /**
+     * uses Snell's law to refract incoming light beams
+     * @param direction incoming unit direction vector of the beam
+     * @param hitPoint exact contact point on the block boundary
+     * @return refracted unit vector, or reflected vector if TIR occurs
+     */
+    public Point2D refract(Point2D direction, Point2D hitPoint) {
+        Point2D normal = getNormalAt(hitPoint);
+
+        double n1 = 1.0;                  // Starting index (Air)
+        double n2 = refractiveIndex;      // Target index (Water = 1.33, Glass = 1.50)
+
+        double cosTheta1 = -direction.dotProduct(normal);
+
+        if (cosTheta1 < 0) {
+            cosTheta1 = direction.dotProduct(normal);
+            double temp = n1;
+            n1 = n2;
+            n2 = temp;
+            normal = normal.multiply(-1.0);
+        }
+
+        double eta = n1 / n2;
+        double sin2Theta2 = eta * eta * (1.0 - cosTheta1 * cosTheta1);
+
+        if (sin2Theta2 > 1.0) {
+            double dot = direction.dotProduct(normal);
+            return direction.subtract(normal.multiply(2.0 * dot)); // Standard reflection formula
+        }
+
+        double cosTheta2 = Math.sqrt(1.0 - sin2Theta2);
+
+        Point2D term1 = direction.multiply(eta);
+        Point2D term2 = normal.multiply(eta * cosTheta1 - cosTheta2);
+        return term1.add(term2).normalize();
+    }
 }
