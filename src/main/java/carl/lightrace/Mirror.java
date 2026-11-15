@@ -43,12 +43,21 @@ public abstract class Mirror {
     public Point2D getEnd() {
         return position.add(getSurfaceDirection().multiply(length / 2));
     }
+
+    /**
+     * helper method that calculates the intersection distance t along a ray.
+     * @param origin ray origin point
+     * @param direction normalized ray direction vector
+     * @return distance t to hit, or Double.POSITIVE_INFINITY if there is no intersection
+     */
+    public abstract double intersect(Point2D origin, Point2D direction);
     
     /**
      * Receives the unit vector direction of the light beam and 
      * returns the reflected direction in Point2D form.
      * @param direction unit vector of the beam's direction
+     * @param hitPoint unit vector of the hit point
      * @return reflected unit vector of the beam's direction
      */
-    public abstract Point2D reflect(Point2D direction);
+    public abstract Point2D reflect(Point2D direction, Point2D hitPoint);
 }
