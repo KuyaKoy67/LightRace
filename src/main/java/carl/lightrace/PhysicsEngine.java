@@ -40,7 +40,7 @@ public class PhysicsEngine {
 
             Point2D hit = origin.add(dir.multiply(closestT));
             path.add(hit);
-            dir = closestMirror.reflect(dir);
+            dir = closestMirror.reflect(dir, hit);
             origin = hit;
         }
 

@@ -68,7 +68,7 @@ public class StraightMirror extends Mirror {
      * @return the reflected direction vector unit in Point2D
      */
     @Override
-    public Point2D reflect(Point2D direction) {
+    public Point2D reflect(Point2D direction, Point2D hitPoint) {
         Point2D normal = getNormal();
         double dot = direction.dotProduct(normal);
         Point2D scaledNormal = normal.multiply(2 * dot);

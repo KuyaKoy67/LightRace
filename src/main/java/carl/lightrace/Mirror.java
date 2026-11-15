@@ -56,7 +56,8 @@ public abstract class Mirror {
      * Receives the unit vector direction of the light beam and 
      * returns the reflected direction in Point2D form.
      * @param direction unit vector of the beam's direction
+     * @param hitPoint unit vector of the hit point
      * @return reflected unit vector of the beam's direction
      */
-    public abstract Point2D reflect(Point2D direction);
+    public abstract Point2D reflect(Point2D direction, Point2D hitPoint);
 }
