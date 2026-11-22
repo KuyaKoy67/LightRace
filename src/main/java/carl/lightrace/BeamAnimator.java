@@ -105,5 +105,43 @@ public class BeamAnimator {
                 segmentDistance = 0;
             }
         }
+
+        Point2D head = currentHead();
+        listener.onFrame(drawnPoints(head), elapsed);
+
+        if (head.distance(goal) <= goalRadius) {
+            finish(true);
+        } else if (segment >= segmentLength.length || isOutsideGrid(head)) {
+            finish(false);
+        }
+    }
+
+    private Point2D currentHead() {
+        if (segment >= segmentLength.length) {
+            return path.get(path.size() - 1);
+        }
+        Point2D a = path.get(segment);
+        Point2D b = path.get(segment + 1);
+        double t = segmentLength[segment] == 0 ? 0 : segmentDistance / segmentLength[segment];
+        return a.add(b.subtract(a).multiply(t));
+    }
+
+    private List<Point2D> drawnPoints(Point2D head) {
+        List<Point2D> drawn = new ArrayList<>();
+        int lastFull = Math.min(segment, path.size() - 1);
+        for (int i = 0; i <= lastFull; i++) {
+            drawn.add(path.get(i));
+        }
+        drawn.add(head);
+        return drawn;
+    }
+
+    private boolean isOutsideGrid(Point2D p) {
+        return p.getX() < 0 || p.getY() < 0 || p.getX() > GRID_SIZE || p.getY() > GRID_SIZE;
+    }
+
+    private void finish(boolean goalReached) {
+        timer.stop();
+        listener.onFinished(goalReached, elapsed);
     }
 }
