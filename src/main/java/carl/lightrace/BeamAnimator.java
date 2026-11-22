@@ -2,6 +2,8 @@ package carl.lightrace;
 
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Point2D;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class BeamAnimator {
@@ -58,5 +60,50 @@ public class BeamAnimator {
                 step(dt);
             }
         };
+    }
+
+    public void start() {
+        List<Point2D> first = new ArrayList<>();
+        first.add(path.get(0));
+        listener.onFrame(first, 0);
+        timer.start();
+    }
+
+    public void stop() {
+        timer.stop();
+    }
+
+    private double mediumIndexAt(Point2D p, List<ElementBlock> blocks) {
+        for (ElementBlock b : blocks) {
+            double halfW = b.getWidth() / 2.0;
+            double halfH = b.getHeight() / 2.0;
+            if (Math.abs(p.getX() - b.getPosition().getX()) < halfW
+                    && Math.abs(p.getY() - b.getPosition().getY()) < halfH) {
+                return b.getRefractiveIndex();
+            }
+        }
+        return 1.0;
+    }
+
+    private void step(double dt) {
+        double remaining = dt;
+
+        while (remaining > 1e-12 && segment < segmentLength.length) {
+            double speed = BEAM_SPEED / segmentIndex[segment];
+            double distanceLeft = segmentLength[segment] - segmentDistance;
+            double reach = speed * remaining;
+
+            if (reach < distanceLeft) {
+                segmentDistance += reach;
+                elapsed += remaining;
+                remaining = 0;
+            } else {
+                double timeUsed = distanceLeft / speed;
+                elapsed += timeUsed;
+                remaining -= timeUsed;
+                segment++;
+                segmentDistance = 0;
+            }
+        }
     }
 }
