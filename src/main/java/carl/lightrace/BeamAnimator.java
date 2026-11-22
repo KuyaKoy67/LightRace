@@ -28,4 +28,35 @@ public class BeamAnimator {
     private double elapsed = 0;
     private int segment = 0;
     private double segmentDistance = 0;
+
+    public BeamAnimator(List<Point2D> path, List<ElementBlock> blocks,
+                        Point2D goal, double goalRadius, Listener listener) {
+        this.path = path;
+        this.goal = goal;
+        this.goalRadius = goalRadius;
+        this.listener = listener;
+
+        int count = path.size() - 1;
+        segmentLength = new double[count];
+        segmentIndex = new double[count];
+        for (int i = 0; i < count; i++) {
+            Point2D a = path.get(i);
+            Point2D b = path.get(i + 1);
+            segmentLength[i] = a.distance(b);
+            segmentIndex[i] = mediumIndexAt(a.midpoint(b), blocks);
+        }
+
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (lastNanos == 0) {
+                    lastNanos = now;
+                    return;
+                }
+                double dt = Math.min((now - lastNanos) / 1e9, MAX_FRAME_SECONDS);
+                lastNanos = now;
+                step(dt);
+            }
+        };
+    }
 }
