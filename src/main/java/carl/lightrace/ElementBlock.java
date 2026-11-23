@@ -32,17 +32,32 @@ public class ElementBlock {
         double minY = position.getY() - height / 2.0;
         double maxY = position.getY() + height / 2.0;
 
-        // X-slab intersection distances
-        double t1 = (minX - origin.getX()) / direction.getX();
-        double t2 = (maxX - origin.getX()) / direction.getX();
-        double tmin = Math.min(t1, t2);
-        double tmax = Math.max(t1, t2);
+        double tmin = Double.NEGATIVE_INFINITY;
+        double tmax = Double.POSITIVE_INFINITY;
+
+        // X-slab intersection distances (a beam parallel to the slab never crosses it)
+        if (Math.abs(direction.getX()) < 1e-12) {
+            if (origin.getX() < minX || origin.getX() > maxX) {
+                return Double.POSITIVE_INFINITY;
+            }
+        } else {
+            double t1 = (minX - origin.getX()) / direction.getX();
+            double t2 = (maxX - origin.getX()) / direction.getX();
+            tmin = Math.max(tmin, Math.min(t1, t2));
+            tmax = Math.min(tmax, Math.max(t1, t2));
+        }
 
         // Y-slab intersection distances
-        double t3 = (minY - origin.getY()) / direction.getY();
-        double t4 = (maxY - origin.getY()) / direction.getY();
-        tmin = Math.max(tmin, Math.min(t3, t4));
-        tmax = Math.min(tmax, Math.max(t3, t4));
+        if (Math.abs(direction.getY()) < 1e-12) {
+            if (origin.getY() < minY || origin.getY() > maxY) {
+                return Double.POSITIVE_INFINITY;
+            }
+        } else {
+            double t3 = (minY - origin.getY()) / direction.getY();
+            double t4 = (maxY - origin.getY()) / direction.getY();
+            tmin = Math.max(tmin, Math.min(t3, t4));
+            tmax = Math.min(tmax, Math.max(t3, t4));
+        }
 
         // If tmax < 0, the box is behind the ray. If tmin > tmax, the ray misses the box.
         if (tmax < 0 || tmin > tmax) {

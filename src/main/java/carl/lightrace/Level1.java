@@ -12,15 +12,20 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 
-public class Level1 implements Initializable {
+public class      Level1 implements Initializable {
     @FXML private Canvas canvas;
     @FXML private Circle photon;
     @FXML private Label TimeLabel;
     @FXML private Label LevelLabel;
     @FXML private Button PlayButton;
+    @FXML private Slider angleSlider;
+    @FXML private Label AngleLabel;
 
     private static final double SCALE = 350.0 / 600.0;
 
@@ -29,6 +34,7 @@ public class Level1 implements Initializable {
 
     private List<Point2D> beamPath = null;
     private BeamAnimator animator;
+    private double laserAngle;
 
     public static void setLevel(int index) {
         levelSystem.setCurrentLevelIndex(index);
@@ -36,7 +42,54 @@ public class Level1 implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        canvas.setOnMousePressed(e -> aimLaser(e));
+        canvas.setOnMouseDragged(e -> aimLaser(e));
+        angleSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (Math.abs(newValue.doubleValue() - laserAngle) > 1e-9) {
+                laserAngle = newValue.doubleValue();
+                beamPath = null;
+                photon.setVisible(false);
+                TimeLabel.setText("Time : 0.00s");
+                updateAngleDisplay();
+                redraw();
+            }
+        });
+        resetAngle();
         loadLevelUI();
+    }
+
+    private void updateAngleDisplay() {
+        AngleLabel.setText(String.format("%.1f°", laserAngle));
+        angleSlider.setValue(laserAngle);
+    }
+
+    private void resetAngle() {
+        Level level = levelSystem.getCurrentLevel();
+        laserAngle = Math.toDegrees(Math.atan2(-level.getSourceDirY(), level.getSourceDirX()));
+        if (laserAngle < 0) {
+            laserAngle += 360;
+        }
+    }
+
+    private void aimLaser(MouseEvent e) {
+        if (PlayButton.isDisable()) {
+            return;
+        }
+        Level level = levelSystem.getCurrentLevel();
+        double dx = e.getX() / SCALE - level.getSourceX();
+        double dy = e.getY() / SCALE - level.getSourceY();
+        if (Math.hypot(dx, dy) < 1) {
+            return;
+        }
+        laserAngle = Math.toDegrees(Math.atan2(-dy, dx));
+        if (laserAngle < 0) {
+            laserAngle += 360;
+        }
+        beamPath = null;
+        photon.setVisible(false);
+        TimeLabel.setText("Time : 0.00s");
+        updateAngleDisplay();
+        redraw();
     }
 
     private void loadLevelUI() {
@@ -47,8 +100,10 @@ public class Level1 implements Initializable {
         beamPath = null;
         photon.setVisible(false);
         PlayButton.setDisable(false);
+        angleSlider.setDisable(false);
         TimeLabel.setText("Time : 0.00s");
         LevelLabel.setText("Level : " + levelSystem.getCurrentLevel().getLevelNumber());
+        updateAngleDisplay();
         redraw();
     }
 
@@ -58,7 +113,8 @@ public class Level1 implements Initializable {
 
         Level level = levelSystem.getCurrentLevel();
         Point2D start = new Point2D(level.getSourceX(), level.getSourceY());
-        Point2D direction = new Point2D(level.getSourceDirX(), level.getSourceDirY());
+        double radians = Math.toRadians(laserAngle);
+        Point2D direction = new Point2D(Math.cos(radians), -Math.sin(radians));
         Point2D goal = new Point2D(level.getGoalX(), level.getGoalY());
 
         List<Point2D> fullPath = physicsEngine.simulate(
@@ -71,6 +127,7 @@ public class Level1 implements Initializable {
         String bounceError = PlacementValidator.validateBounces(physicsEngine);
 
         PlayButton.setDisable(true);
+        angleSlider.setDisable(true);
         photon.setVisible(true);
 
         animator = new BeamAnimator(fullPath, level.getInitialBlocks(), goal, level.getGoalRad(),
@@ -88,12 +145,13 @@ public class Level1 implements Initializable {
                     @Override
                     public void onFinished(boolean goalReached, double elapsed) {
                         PlayButton.setDisable(false);
+                        angleSlider.setDisable(false);
                         if (goalReached) {
-                            TimeLabel.setText(String.format("Time : %.2fs - Goal reached!", elapsed));
+                            TimeLabel.setText(String.format("Goal! %.2fs", elapsed));
                         } else if (bounceError != null) {
                             showMessage(bounceError);
                         } else {
-                            TimeLabel.setText(String.format("Time : %.2fs - Missed", elapsed));
+                            TimeLabel.setText(String.format("Missed %.2fs", elapsed));
                         }
                     }
                 });
@@ -102,6 +160,7 @@ public class Level1 implements Initializable {
 
     @FXML
     void resetArea(ActionEvent e) {
+        resetAngle();
         loadLevelUI();
     }
 
@@ -133,6 +192,21 @@ public class Level1 implements Initializable {
         gc.fillOval(level.getGoalX() - r, level.getGoalY() - r, 2 * r, 2 * r);
         gc.setFill(Color.RED);
         gc.fillOval(level.getSourceX() - 12, level.getSourceY() - 12, 24, 24);
+
+        if (beamPath == null) {
+            double radians = Math.toRadians(laserAngle);
+            double endX = level.getSourceX() + 70 * Math.cos(radians);
+            double endY = level.getSourceY() - 70 * Math.sin(radians);
+            gc.setStroke(Color.ORANGE);
+            gc.setLineWidth(3);
+            gc.strokeLine(level.getSourceX(), level.getSourceY(), endX, endY);
+
+            double textX = Math.max(10, Math.min(level.getSourceX() + 20, 420));
+            double textY = Math.max(30, Math.min(level.getSourceY() - 20, 590));
+            gc.setFill(Color.BLACK);
+            gc.setFont(new Font(24));
+            gc.fillText(String.format("Angle: %.1f°", laserAngle), textX, textY);
+        }
 
         if (beamPath != null) {
             gc.setStroke(Color.RED);
