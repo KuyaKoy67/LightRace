@@ -55,6 +55,26 @@ public class PlacementValidator {
         return null;
     }
 
+    public static String validateBlock(ElementBlock candidate, Level level,
+                                       List<Mirror> placedMirrors, List<ElementBlock> placedBlocks) {
+        double[] r = rect(candidate);
+
+        if (r[0] < 0 || r[1] < 0 || r[2] > GRID_SIZE || r[3] > GRID_SIZE) {
+            return "The block must stay inside the grid.";
+        }
+
+        Point2D source = new Point2D(level.getSourceX(), level.getSourceY());
+        Point2D goal = new Point2D(level.getGoalX(), level.getGoalY());
+        if (circleTouchesRect(source, SOURCE_CLEARANCE, r)) {
+            return "The block cannot cover the laser source.";
+        }
+        if (circleTouchesRect(goal, level.getGoalRad(), r)) {
+            return "The block cannot cover the goal.";
+        }
+
+        return ""; //unfinished
+    }
+
     private static boolean inGrid(Point2D p) {
         return p.getX() >= 0 && p.getX() <= GRID_SIZE && p.getY() >= 0 && p.getY() <= GRID_SIZE;
     }
@@ -117,5 +137,11 @@ public class PlacementValidator {
         double d4 = cross(p1, p2, p4);
         return ((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0))
                 && ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0));
+    }
+
+    private static boolean circleTouchesRect(Point2D c, double radius, double[] r) {
+        double cx = Math.max(r[0], Math.min(c.getX(), r[2]));
+        double cy = Math.max(r[1], Math.min(c.getY(), r[3]));
+        return c.distance(cx, cy) <= radius;
     }
 }
