@@ -12,13 +12,13 @@ import static javafx.application.Application.launch;
 /**
  * JavaFX App
  */
-public class App extends Application {
+public class  App extends Application {
 
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("LaunchWindow"), 523, 431);
+        scene = new Scene(loadFXML("LaunchWindow"), 523, 481);
         stage.setScene(scene);
         stage.setTitle("Light Race");
         stage.show();

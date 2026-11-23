@@ -23,6 +23,7 @@ public class LevelSystem {
      */
     private void initializeMirrorOnlyLevels() {
         List<Mirror> level1Mirrors = new ArrayList<>();
+        List<ElementBlock> level1Blocks = new ArrayList<>();
         Map<String, Integer> level1Tools = new HashMap<>();
         level1Tools.put("StraightMirror", 1);
 
@@ -34,10 +35,12 @@ public class LevelSystem {
                 550.0, 200.0,
                 25.0,
                 level1Mirrors,
+                level1Blocks,
                 level1Tools
         );
 
         List<Mirror> level2Mirrors = new ArrayList<>();
+        List<ElementBlock> level2Blocks = new ArrayList<>();
         Map<String, Integer> level2Tools = new HashMap<>();
         level2Tools.put("StraightMirror", 2);
 
@@ -49,12 +52,14 @@ public class LevelSystem {
                 550.0, 50.0,
                 25.0,
                 level2Mirrors,
+                level2Blocks,
                 level2Tools
         );
 
         List<Mirror> level3Mirrors = new ArrayList<>();
         level3Mirrors.add(new StraightMirror(new Point2D(300.0, 300.0),Math.PI / 4, 50.0));
 
+        List<ElementBlock> level3Blocks = new ArrayList<>();
         Map<String, Integer> level3Tools = new HashMap<>();
         level3Tools.put("StraightMirror", 2);
 
@@ -66,6 +71,7 @@ public class LevelSystem {
                 550.0, 550.0,
                 25.0,
                 level3Mirrors,
+                level3Blocks,
                 level3Tools
         );
 
