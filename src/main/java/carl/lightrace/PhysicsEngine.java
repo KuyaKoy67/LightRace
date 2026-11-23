@@ -2,14 +2,19 @@ package carl.lightrace;
 
 import javafx.geometry.Point2D;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PhysicsEngine {
 
-    private static final int MAX_BOUNCES = 50;
+    public static final int MAX_BOUNCES = 50;
     private static final double GRID_EDGE_DISTANCE = 600.0;
     private static final double C = 1.0;
+
+    @Getter
+    private boolean bounceCapReached;
 
     /**
      * Simulates the light beam's path through the level, handling both mirrors and element blocks.
@@ -21,6 +26,7 @@ public class PhysicsEngine {
      * @return list of points representing the full path of the beam
      */
     public List<Point2D> simulate(Point2D start, Point2D direction, List<Mirror> mirrors, List<ElementBlock> blocks) {
+        bounceCapReached = false;
         List<Point2D> path = new ArrayList<>();
         path.add(start);
 
@@ -57,7 +63,7 @@ public class PhysicsEngine {
 
             if (closestMirror == null && closestBlock == null) {
                 path.add(origin.add(dir.multiply(GRID_EDGE_DISTANCE)));
-                break;
+                return path;
             }
 
             Point2D hit = origin.add(dir.multiply(closestT));
@@ -72,6 +78,7 @@ public class PhysicsEngine {
             origin = hit;
         }
 
+        bounceCapReached = true;
         return path;
     }
 

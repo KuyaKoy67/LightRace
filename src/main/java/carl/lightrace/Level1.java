@@ -1,24 +1,26 @@
 package carl.lightrace;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polyline;
-import javafx.util.Duration;
 
 public class Level1 implements Initializable {
     @FXML private Canvas canvas;
     @FXML private Circle photon;
+    @FXML private Label TimeLabel;
+    @FXML private Label LevelLabel;
+    @FXML private Button PlayButton;
 
     private static final double SCALE = 350.0 / 600.0;
 
@@ -26,8 +28,7 @@ public class Level1 implements Initializable {
     private final PhysicsEngine physicsEngine = new PhysicsEngine();
 
     private List<Point2D> beamPath = null;
-    private PathTransition animation;
-
+    private BeamAnimator animator;
 
     public static void setLevel(int index) {
         levelSystem.setCurrentLevelIndex(index);
@@ -39,20 +40,18 @@ public class Level1 implements Initializable {
     }
 
     private void loadLevelUI() {
-        if (animation != null) {
-            animation.stop();
+        if (animator != null) {
+            animator.stop();
+            animator = null;
         }
         beamPath = null;
         photon.setVisible(false);
+        PlayButton.setDisable(false);
+        TimeLabel.setText("Time : 0.00s");
+        LevelLabel.setText("Level : " + levelSystem.getCurrentLevel().getLevelNumber());
         redraw();
     }
 
-    /**
-     * Handler of the PLAY button. Walks along the beam in steps of 5 units and
-     * stops at the goal (or at the edge of the grid). Then the photon is moved
-     * along that path.
-     * @param e the button click event
-     */
     @FXML
     void startLight(ActionEvent e) {
         loadLevelUI();
@@ -62,52 +61,57 @@ public class Level1 implements Initializable {
         Point2D direction = new Point2D(level.getSourceDirX(), level.getSourceDirY());
         Point2D goal = new Point2D(level.getGoalX(), level.getGoalY());
 
-        List<Point2D> raw = physicsEngine.simulate(
+        List<Point2D> fullPath = physicsEngine.simulate(
                 start,
                 direction,
                 level.getInitialMirrors(),
                 level.getInitialBlocks()
         );
 
-        Point2D end = raw.get(1);
-        double length = start.distance(end);
+        String bounceError = PlacementValidator.validateBounces(physicsEngine);
 
-        beamPath = new ArrayList<>();
-        beamPath.add(start);
-        for (double d = 5; d <= length; d += 5) {
-            Point2D p = start.add(end.subtract(start).multiply(d / length));
-            if (p.getX() > 600 || p.getY() > 600 || p.getX() < 0 || p.getY() < 0) {
-                break;
-            }
-            beamPath.add(p);
-            if (p.distance(goal) <= level.getGoalRad()) {
-                break;
-            }
-        }
-
-        Polyline track = new Polyline();
-        for (Point2D p : beamPath) {
-            track.getPoints().addAll(p.getX() * SCALE, p.getY() * SCALE);
-        }
-
-        redraw();
+        PlayButton.setDisable(true);
         photon.setVisible(true);
-        animation = new PathTransition(Duration.seconds(2), track, photon);
-        animation.play();
+
+        animator = new BeamAnimator(fullPath, level.getInitialBlocks(), goal, level.getGoalRad(),
+                new BeamAnimator.Listener() {
+                    @Override
+                    public void onFrame(List<Point2D> drawn, double elapsed) {
+                        beamPath = drawn;
+                        Point2D head = drawn.get(drawn.size() - 1);
+                        photon.setCenterX(head.getX() * SCALE);
+                        photon.setCenterY(head.getY() * SCALE);
+                        TimeLabel.setText(String.format("Time : %.2fs", elapsed));
+                        redraw();
+                    }
+
+                    @Override
+                    public void onFinished(boolean goalReached, double elapsed) {
+                        PlayButton.setDisable(false);
+                        if (goalReached) {
+                            TimeLabel.setText(String.format("Time : %.2fs - Goal reached!", elapsed));
+                        } else if (bounceError != null) {
+                            showMessage(bounceError);
+                        } else {
+                            TimeLabel.setText(String.format("Time : %.2fs - Missed", elapsed));
+                        }
+                    }
+                });
+        animator.start();
     }
 
-    /**
-     * Handler of the RESET button. Puts the level back to its starting state.
-     * @param e the button click event
-     */
     @FXML
     void resetArea(ActionEvent e) {
         loadLevelUI();
     }
 
-    /**
-     * Draws the grid, the goal, the source and the beam (if there is one).
-     */
+    private void showMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
+    }
+
     private void redraw() {
         Level level = levelSystem.getCurrentLevel();
         GraphicsContext gc = canvas.getGraphicsContext2D();
