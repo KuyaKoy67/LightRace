@@ -72,7 +72,32 @@ public class PlacementValidator {
             return "The block cannot cover the goal.";
         }
 
-        return ""; //unfinished
+        List<ElementBlock> allBlocks = new ArrayList<>(level.getInitialBlocks());
+        allBlocks.addAll(placedBlocks);
+        for (ElementBlock other : allBlocks) {
+            double[] o = rect(other);
+            boolean overlap = r[0] < o[2] && r[2] > o[0] && r[1] < o[3] && r[3] > o[1];
+            if (overlap) {
+                return "The block overlaps another block.";
+            }
+        }
+
+        List<Mirror> allMirrors = new ArrayList<>(level.getInitialMirrors());
+        allMirrors.addAll(placedMirrors);
+        for (Mirror m : allMirrors) {
+            if (segmentTouchesRect(m.getStart(), m.getEnd(), r)) {
+                return "The block overlaps a mirror.";
+            }
+        }
+        return null;
+    }
+
+    public static String validateBounces(PhysicsEngine engine) {
+        if (engine.isBounceCapReached()) {
+            return "The beam was stopped after " + PhysicsEngine.MAX_BOUNCES
+                    + " bounces. Check for a loop between mirrors.";
+        }
+        return null;
     }
 
     private static boolean inGrid(Point2D p) {
