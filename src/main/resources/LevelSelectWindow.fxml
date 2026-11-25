@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane hgap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="431.0" prefWidth="523.0" vgap="5.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="carl.lightrace.LevelSelect">
+<GridPane hgap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="431.0" prefWidth="523.0" style="-fx-background-color: #bf1313;" vgap="5.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="carl.lightrace.LevelSelect">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints />
@@ -20,32 +20,62 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button fx:id="lvl1Button" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#enterLevel1" text="1" GridPane.rowIndex="1">
+      <Button fx:id="lvl1Button" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#enterLevel1" onMouseEntered="#enterButton1" onMouseExited="#exitButton1" style="-fx-background-color: #e33030;" text="1" textFill="WHITE" GridPane.rowIndex="1">
          <padding>
             <Insets top="1.0" />
          </padding>
+         <font>
+            <Font name="Arial Black" size="32.0" />
+         </font>
+         <GridPane.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </GridPane.margin>
       </Button>
-      <Button fx:id="lvl2Button" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#enterLevel2" text="2" GridPane.rowIndex="2">
+      <Button fx:id="lvl2Button" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseEntered="#enterButton2" onMouseExited="#exitButton2" style="-fx-background-color: #e33030;" text="2" textFill="WHITE" GridPane.rowIndex="2">
          <padding>
             <Insets top="1.0" />
          </padding>
+         <font>
+            <Font name="Arial Black" size="32.0" />
+         </font>
+         <GridPane.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </GridPane.margin>
       </Button>
-      <Button fx:id="lvl3Button" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#enterLevel3" text="3" GridPane.rowIndex="3">
+      <Button fx:id="lvl3Button" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseEntered="#enterButton3" onMouseExited="#exitButton3" style="-fx-background-color: #e33030;" text="3" textFill="WHITE" GridPane.rowIndex="3">
          <padding>
             <Insets top="1.0" />
          </padding>
+         <font>
+            <Font name="Arial Black" size="32.0" />
+         </font>
+         <GridPane.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </GridPane.margin>
       </Button>
-      <Button fx:id="lvl4Button" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#enterLevel4" text="4" GridPane.rowIndex="4">
+      <Button fx:id="lvl4Button" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseEntered="#enterButton4" onMouseExited="#exitButton4" style="-fx-background-color: #e33030;" text="4" textFill="WHITE" GridPane.rowIndex="4">
          <padding>
             <Insets top="1.0" />
          </padding>
+         <font>
+            <Font name="Arial Black" size="32.0" />
+         </font>
+         <GridPane.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </GridPane.margin>
       </Button>
-      <Button fx:id="lvl5Button" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#enterLevel5" text="5" GridPane.rowIndex="5">
+      <Button fx:id="lvl5Button" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseEntered="#enterButton5" onMouseExited="#exitButton5" style="-fx-background-color: #e33030;" text="5" textFill="WHITE" GridPane.rowIndex="5">
          <padding>
             <Insets top="1.0" />
          </padding>
+         <font>
+            <Font name="Arial Black" size="32.0" />
+         </font>
+         <GridPane.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </GridPane.margin>
       </Button>
-      <Label fx:id="levelLabel" alignment="CENTER" prefHeight="60.0" prefWidth="482.0" text="LEVELS" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnSpan="3">
+      <Label fx:id="levelLabel" alignment="CENTER" prefHeight="60.0" prefWidth="482.0" text="LEVELS" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" GridPane.columnSpan="3">
          <font>
             <Font name="Arial Black" size="41.0" />
          </font></Label>

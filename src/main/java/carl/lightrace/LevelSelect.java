@@ -21,4 +21,45 @@ public class LevelSelect {
         Level1.setLevel(levelIndex);
         App.setRoot("Level1");
     }
+
+    public void enterButton1(MouseEvent mouseEvent) throws IOException {
+        lvl1Button.setStyle("-fx-background-color: #e66060");
+    }
+
+    public void exitButton1(MouseEvent mouseEvent) throws IOException {
+        lvl1Button.setStyle("-fx-background-color: #e33030");
+    }
+
+    public void enterButton2(MouseEvent mouseEvent) throws IOException {
+        lvl2Button.setStyle("-fx-background-color: #e66060");
+    }
+
+    public void exitButton2(MouseEvent mouseEvent) throws IOException {
+        lvl2Button.setStyle("-fx-background-color: #e33030");
+    }
+
+    public void enterButton3(MouseEvent mouseEvent) throws IOException {
+        lvl3Button.setStyle("-fx-background-color: #e66060");
+    }
+
+    public void exitButton3(MouseEvent mouseEvent) throws IOException {
+        lvl3Button.setStyle("-fx-background-color: #e33030");
+    }
+
+    public void enterButton4(MouseEvent mouseEvent) throws IOException {
+        lvl4Button.setStyle("-fx-background-color: #e66060");
+    }
+
+    public void exitButton4(MouseEvent mouseEvent) throws IOException {
+        lvl4Button.setStyle("-fx-background-color: #e33030");
+    }
+
+    public void enterButton5(MouseEvent mouseEvent) throws IOException {
+        lvl5Button.setStyle("-fx-background-color: #e66060");
+    }
+
+    public void exitButton5(MouseEvent mouseEvent) throws IOException {
+        lvl5Button.setStyle("-fx-background-color: #e33030");
+    }
+
 }
