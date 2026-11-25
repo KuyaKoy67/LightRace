@@ -14,17 +14,6 @@ public class LevelSelect {
     @FXML private Button lvl3Button;
     @FXML private Button lvl4Button;
     @FXML private Button lvl5Button;
-    @FXML private Button lvl6Button;
-    @FXML private Button lvl7Button;
-    @FXML private Button lvl8Button;
-    @FXML private Button lvl9Button;
-    @FXML private Button lvl10Button;
-    @FXML private Button lvl11Button;
-    @FXML private Button lvl12Button;
-    @FXML private Button lvl13Button;
-    @FXML private Button lvl14Button;
-    @FXML private Button lvl15Button;
-    @FXML private Button lvl16Button;
 
     public void enterLevel1(MouseEvent mouseEvent) throws IOException {
         Button clicked = (Button) mouseEvent.getSource();
