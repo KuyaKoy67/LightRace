@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 
-public class      Level1 implements Initializable {
+public class Level1 implements Initializable {
     @FXML private Canvas canvas;
     @FXML private Circle photon;
     @FXML private Label TimeLabel;

@@ -39,7 +39,6 @@
                     <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
-            <!-- keep your javafx-maven-plugin block exactly as it is -->
         </plugins>
     </build>
 </project>
