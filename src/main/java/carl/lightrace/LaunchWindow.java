@@ -34,11 +34,11 @@ public class LaunchWindow implements Initializable {
     }
 
     public void enterStartButton(MouseEvent mouseEvent) throws IOException {
-        startButton.setStyle("-fx-background-color: #e66060");
+        startButton.setStyle("-fx-background-color: #6fa3d8");
     }
 
     public void exitStartButton(MouseEvent mouseEvent) throws IOException {
-        startButton.setStyle("-fx-background-color: #e33030");
+        startButton.setStyle("-fx-background-color: #4A7FB5");
     }
 
 }
