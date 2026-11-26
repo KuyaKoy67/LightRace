@@ -2,6 +2,7 @@ package carl.lightrace;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -10,13 +11,12 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 public class Level1 implements Initializable {
@@ -29,6 +29,10 @@ public class Level1 implements Initializable {
     @FXML private Button returnButton;
     @FXML private Slider angleSlider;
     @FXML private Label angleLabel;
+    @FXML private ListView<String> ToolBoxListView;
+    @FXML private Rectangle mirror;
+    @FXML private Rectangle obstacle;
+    @FXML private Pane placementPane;
 
     private static final double SCALE = 350.0 / 600.0;
 
