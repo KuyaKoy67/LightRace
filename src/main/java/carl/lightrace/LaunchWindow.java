@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -17,6 +19,8 @@ import javafx.scene.input.MouseEvent;
  * @author carln
  */
 public class LaunchWindow implements Initializable {
+
+    @FXML private Button startButton;
 
     /**
      * Initializes the controller class.
@@ -28,4 +32,13 @@ public class LaunchWindow implements Initializable {
     public void enterLevels(MouseEvent mouseEvent) throws IOException {
         App.setRoot("LevelSelectWindow");
     }
+
+    public void enterStartButton(MouseEvent mouseEvent) throws IOException {
+        startButton.setStyle("-fx-background-color: #e66060");
+    }
+
+    public void exitStartButton(MouseEvent mouseEvent) throws IOException {
+        startButton.setStyle("-fx-background-color: #e33030");
+    }
+
 }

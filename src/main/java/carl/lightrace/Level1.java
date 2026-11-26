@@ -1,5 +1,6 @@
 package carl.lightrace;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -21,11 +22,13 @@ import javafx.scene.text.Font;
 public class Level1 implements Initializable {
     @FXML private Canvas canvas;
     @FXML private Circle photon;
-    @FXML private Label TimeLabel;
-    @FXML private Label LevelLabel;
-    @FXML private Button PlayButton;
+    @FXML private Label timeLabel;
+    @FXML private Label levelLabel;
+    @FXML private Button playButton;
+    @FXML private Button resetButton;
+    @FXML private Button returnButton;
     @FXML private Slider angleSlider;
-    @FXML private Label AngleLabel;
+    @FXML private Label angleLabel;
 
     private static final double SCALE = 350.0 / 600.0;
 
@@ -40,6 +43,30 @@ public class Level1 implements Initializable {
         levelSystem.setCurrentLevelIndex(index);
     }
 
+    public void enterPlayButton(MouseEvent mouseEvent) throws IOException {
+        playButton.setStyle("-fx-background-color: #b9f0c3");
+    }
+
+    public void exitPlayButton(MouseEvent mouseEvent) throws IOException {
+        playButton.setStyle("-fx-background-color: #76d166");
+    }
+
+    public void enterResetButton(MouseEvent mouseEvent) throws IOException {
+        resetButton.setStyle("-fx-background-color: #e66060");
+    }
+
+    public void exitResetButton(MouseEvent mouseEvent) throws IOException {
+        resetButton.setStyle("-fx-background-color: #e33030");
+    }
+
+    public void enterReturnButton(MouseEvent mouseEvent) throws IOException {
+        returnButton.setStyle("-fx-background-color: #afd8f0");
+    }
+
+    public void exitReturnButton(MouseEvent mouseEvent) throws IOException {
+        returnButton.setStyle("-fx-background-color: #82a7dc");
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         canvas.setOnMousePressed(e -> aimLaser(e));
@@ -49,7 +76,7 @@ public class Level1 implements Initializable {
                 laserAngle = newValue.doubleValue();
                 beamPath = null;
                 photon.setVisible(false);
-                TimeLabel.setText("Time : 0.00s");
+                timeLabel.setText("Time : 0.00s");
                 updateAngleDisplay();
                 redraw();
             }
@@ -59,7 +86,7 @@ public class Level1 implements Initializable {
     }
 
     private void updateAngleDisplay() {
-        AngleLabel.setText(String.format("%.1f°", laserAngle));
+        angleLabel.setText(String.format("%.1f°", laserAngle));
         angleSlider.setValue(laserAngle);
     }
 
@@ -72,7 +99,7 @@ public class Level1 implements Initializable {
     }
 
     private void aimLaser(MouseEvent e) {
-        if (PlayButton.isDisable()) {
+        if (playButton.isDisable()) {
             return;
         }
         Level level = levelSystem.getCurrentLevel();
@@ -87,7 +114,7 @@ public class Level1 implements Initializable {
         }
         beamPath = null;
         photon.setVisible(false);
-        TimeLabel.setText("Time : 0.00s");
+        timeLabel.setText("Time : 0.00s");
         updateAngleDisplay();
         redraw();
     }
@@ -99,10 +126,10 @@ public class Level1 implements Initializable {
         }
         beamPath = null;
         photon.setVisible(false);
-        PlayButton.setDisable(false);
+        playButton.setDisable(false);
         angleSlider.setDisable(false);
-        TimeLabel.setText("Time : 0.00s");
-        LevelLabel.setText("Level : " + levelSystem.getCurrentLevel().getLevelNumber());
+        timeLabel.setText("Time : 0.00s");
+        levelLabel.setText("Level : " + levelSystem.getCurrentLevel().getLevelNumber());
         updateAngleDisplay();
         redraw();
     }
@@ -126,7 +153,7 @@ public class Level1 implements Initializable {
 
         String bounceError = PlacementValidator.validateBounces(physicsEngine);
 
-        PlayButton.setDisable(true);
+        playButton.setDisable(true);
         angleSlider.setDisable(true);
         photon.setVisible(true);
 
@@ -138,20 +165,20 @@ public class Level1 implements Initializable {
                         Point2D head = drawn.get(drawn.size() - 1);
                         photon.setCenterX(head.getX() * SCALE);
                         photon.setCenterY(head.getY() * SCALE);
-                        TimeLabel.setText(String.format("Time : %.2fs", elapsed));
+                        timeLabel.setText(String.format("Time : %.2fs", elapsed));
                         redraw();
                     }
 
                     @Override
                     public void onFinished(boolean goalReached, double elapsed) {
-                        PlayButton.setDisable(false);
+                        playButton.setDisable(false);
                         angleSlider.setDisable(false);
                         if (goalReached) {
-                            TimeLabel.setText(String.format("Goal! %.2fs", elapsed));
+                            timeLabel.setText(String.format("Goal! %.2fs", elapsed));
                         } else if (bounceError != null) {
                             showMessage(bounceError);
                         } else {
-                            TimeLabel.setText(String.format("Missed %.2fs", elapsed));
+                            timeLabel.setText(String.format("Missed %.2fs", elapsed));
                         }
                     }
                 });
@@ -162,6 +189,11 @@ public class Level1 implements Initializable {
     void resetArea(ActionEvent e) {
         resetAngle();
         loadLevelUI();
+    }
+
+    @FXML
+    void returnToLevelSelect(MouseEvent e) throws IOException {
+        App.setRoot("LevelSelectWindow");
     }
 
     private void showMessage(String message) {
