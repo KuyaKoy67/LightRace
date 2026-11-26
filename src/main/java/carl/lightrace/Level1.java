@@ -206,13 +206,13 @@ public class Level1 implements Initializable {
     private void redraw() {
         Level level = levelSystem.getCurrentLevel();
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.WHITE);
+        gc.setFill(Color.LIGHTGRAY);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         gc.save();
         gc.scale(SCALE, SCALE);
 
-        gc.setStroke(Color.LIGHTGRAY);
+        gc.setStroke(Color.WHITE);
         gc.setLineWidth(1);
         for (double g = 0; g <= 600; g += 50) {
             gc.strokeLine(g, 0, g, 600);
