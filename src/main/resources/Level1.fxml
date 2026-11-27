@@ -98,7 +98,6 @@
             <children>
                 <Canvas fx:id="canvas" height="350.0" width="350.0" />
                 <Circle fx:id="photon" fill="YELLOW" mouseTransparent="true" radius="5.0" stroke="BLACK" visible="false" />
-            <Rectangle fx:id="obstacle" arcHeight="5.0" arcWidth="5.0" fill="#2a2d30" height="100.0" layoutX="159.0" layoutY="45.0" stroke="#484747" strokeType="INSIDE" width="20.0" />
             </children>
         </Pane>
       <Button fx:id="returnButton" maxHeight="32.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#returnToLevelSelect" onMouseEntered="#enterReturnButton" onMouseExited="#exitReturnButton" prefHeight="30.0" prefWidth="122.0" style="-fx-background-color: #82a7dc;" text="RETURN" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4">

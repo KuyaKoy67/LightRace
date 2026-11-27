@@ -220,6 +220,27 @@ public class Level1 implements Initializable {
         redraw();
     }
 
+    private List<Point2D> clipAtWall(List<Point2D> path) {
+        if (obstacleObject == null) {
+            return path;
+        }
+        for (int i = 0; i < path.size() - 1; i++) {
+            Point2D a = path.get(i);
+            double len = a.distance(path.get(i + 1));
+            if (len == 0) {
+                continue;
+            }
+            Point2D dir = path.get(i + 1).subtract(a).multiply(1 / len);
+            double t = obstacleObject.intersect(a, dir);
+            if (t < len) {
+                List<Point2D> clipped = new ArrayList<>(path.subList(0, i + 1));
+                clipped.add(a.add(dir.multiply(t)));
+                return clipped;
+            }
+        }
+        return path;
+    }
+
     @FXML
     void startLight(ActionEvent e) {
         loadLevelUI();
