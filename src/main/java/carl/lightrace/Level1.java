@@ -2,21 +2,26 @@ package carl.lightrace;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 public class Level1 implements Initializable {
@@ -29,11 +34,21 @@ public class Level1 implements Initializable {
     @FXML private Button returnButton;
     @FXML private Slider angleSlider;
     @FXML private Label angleLabel;
+    @FXML private ListView<String> toolBoxListView;
+    @FXML private Rectangle mirror;
+    @FXML private Rectangle obstacle;
+    @FXML private Pane placementPane;
 
     private static final double SCALE = 350.0 / 600.0;
+    private static final String mirrorTool = "StraightMirror";
 
     private static final LevelSystem levelSystem = new LevelSystem();
     private final PhysicsEngine physicsEngine = new PhysicsEngine();
+
+    private final List<Mirror> mirrors = new ArrayList<>();
+    private Obstacle wall;
+    private Mirror dragged;
+    private Point2D grabOffset;
 
     private List<Point2D> beamPath = null;
     private BeamAnimator animator;
@@ -69,20 +84,159 @@ public class Level1 implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        canvas.setOnMousePressed(e -> aimLaser(e));
-        canvas.setOnMouseDragged(e -> aimLaser(e));
+        placementPane.getChildren().remove(mirror);
+
+        if (levelSystem.getCurrentLevel().getLevelNumber() == 1) {
+            Bounds b = obstacle.getBoundsInParent();
+            wall = new Obstacle(new Point2D((b.getMinX() + b.getWidth() / 2) / SCALE,
+                    (b.getMinY() + b.getHeight() / 2) / SCALE), b.getWidth() / SCALE, b.getHeight() / SCALE);
+            obstacle.setMouseTransparent(true);
+        } else {
+            placementPane.getChildren().remove(obstacle);
+        }
+
+        toolBoxListView.getItems().add("Straight Mirror");
+        toolBoxListView.setOnDragDetected(e -> {
+            if (toolBoxListView.getSelectionModel().isEmpty()) {
+                return;
+            }
+            Dragboard db = toolBoxListView.startDragAndDrop(TransferMode.COPY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(mirrorTool);
+            db.setContent(content);
+        });
+
+        canvas.setOnDragOver(e -> e.acceptTransferModes(TransferMode.COPY));
+        canvas.setOnDragDropped(e -> {
+            placeMirror(e.getX() / SCALE, e.getY() / SCALE);
+            e.setDropCompleted(true);
+        });
+
+        canvas.setOnMousePressed(e -> {
+            if (playButton.isDisable()) {
+                return;
+            }
+            Mirror hit = mirrorAt(new Point2D(e.getX() / SCALE, e.getY() / SCALE));
+            if (e.getButton() == MouseButton.SECONDARY) {
+                if (hit != null) {
+                    mirrors.remove(hit);
+                    changed();
+                }
+            } else if (hit != null) {
+                dragged = hit;
+                grabOffset = hit.position.subtract(e.getX() / SCALE, e.getY() / SCALE);
+            } else {
+                aimLaser(e);
+            }
+        });
+
+        canvas.setOnMouseDragged(e -> {
+            if (dragged == null) {
+                aimLaser(e);
+                return;
+            }
+            Point2D pos = new Point2D(e.getX() / SCALE, e.getY() / SCALE).add(grabOffset);
+            replace(dragged, new StraightMirror(pos, dragged.angle, dragged.length));
+        });
+
+        canvas.setOnMouseReleased(e -> dragged = null);
+        canvas.setOnScroll(e -> {
+            Mirror hit = mirrorAt(new Point2D(e.getX() / SCALE, e.getY() / SCALE));
+            if (hit != null && !playButton.isDisable()) {
+                double turn = Math.signum(e.getDeltaY()) * Math.toRadians(5);
+                replace(hit, new StraightMirror(hit.position, hit.angle + turn, hit.length));
+            }
+        });
+
         angleSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (Math.abs(newValue.doubleValue() - laserAngle) > 1e-9) {
                 laserAngle = newValue.doubleValue();
-                beamPath = null;
-                photon.setVisible(false);
-                timeLabel.setText("Time : 0.00s");
                 updateAngleDisplay();
-                redraw();
+                changed();
             }
         });
+
         resetAngle();
         loadLevelUI();
+    }
+
+    private void placeMirror(double x, double y) {
+        if (playButton.isDisable()) {
+            return;
+        }
+
+        Mirror m = new StraightMirror(new Point2D(x, y), 0, 100);
+        String error = PlacementValidator.validateToolAvailable(
+                levelSystem.getCurrentLevel(), mirrorTool, mirrors.size());
+
+        if (error == null) {
+            error = placementError(m, null);
+        }
+
+        if (error != null) {
+            showMessage(error);
+            return;
+        }
+
+        mirrors.add(m);
+        changed();
+    }
+
+    private void replace(Mirror old, Mirror updated) {
+        if (placementError(updated, old) != null) {
+            return;
+        }
+
+        mirrors.set(mirrors.indexOf(old), updated);
+        if (dragged == old) {
+            dragged = updated;
+        }
+
+        changed();
+    }
+
+    private String placementError(Mirror m, Mirror ignore) {
+        List<Mirror> others = new ArrayList<>(mirrors);
+        others.remove(ignore);
+        String error = PlacementValidator.validateMirror(m, levelSystem.getCurrentLevel(), others, List.of());
+
+        if (error == null && wall != null) {
+            for (int i = 0; i <= 10; i++) {   // sample points along the mirror
+                Point2D p = m.getStart().add(m.getEnd().subtract(m.getStart()).multiply(i / 10.0));
+                if (Math.abs(p.getX() - wall.getPosition().getX()) <= wall.getWidth() / 2
+                        && Math.abs(p.getY() - wall.getPosition().getY()) <= wall.getHeight() / 2) {
+                    return "The mirror cannot overlap the obstacle.";
+                }
+            }
+        }
+
+        return error;
+    }
+
+    private Mirror mirrorAt(Point2D p) {
+        for (Mirror m : mirrors) {
+            Point2D a = m.getStart();
+            Point2D ab = m.getEnd().subtract(a);
+            double t = Math.max(0, Math.min(1, p.subtract(a).dotProduct(ab) / ab.dotProduct(ab)));
+
+            if (p.distance(a.add(ab.multiply(t))) < 12) {
+                return m;
+            }
+        }
+        return null;
+    }
+
+    private List<Mirror> allMirrors() {
+        List<Mirror> all = new ArrayList<>(levelSystem.getCurrentLevel().getInitialMirrors());
+        all.addAll(mirrors);
+        return all;
+    }
+
+    private void changed() {
+        beamPath = null;
+        photon.setVisible(false);
+        timeLabel.setText("Time : 0.00s");
+        redraw();
     }
 
     private void updateAngleDisplay() {
@@ -93,6 +247,7 @@ public class Level1 implements Initializable {
     private void resetAngle() {
         Level level = levelSystem.getCurrentLevel();
         laserAngle = Math.toDegrees(Math.atan2(-level.getSourceDirY(), level.getSourceDirX()));
+
         if (laserAngle < 0) {
             laserAngle += 360;
         }
@@ -102,21 +257,23 @@ public class Level1 implements Initializable {
         if (playButton.isDisable()) {
             return;
         }
+
         Level level = levelSystem.getCurrentLevel();
         double dx = e.getX() / SCALE - level.getSourceX();
         double dy = e.getY() / SCALE - level.getSourceY();
+
         if (Math.hypot(dx, dy) < 1) {
             return;
         }
+
         laserAngle = Math.toDegrees(Math.atan2(-dy, dx));
+
         if (laserAngle < 0) {
             laserAngle += 360;
         }
-        beamPath = null;
-        photon.setVisible(false);
-        timeLabel.setText("Time : 0.00s");
+
         updateAngleDisplay();
-        redraw();
+        changed();
     }
 
     private void loadLevelUI() {
@@ -124,14 +281,38 @@ public class Level1 implements Initializable {
             animator.stop();
             animator = null;
         }
-        beamPath = null;
-        photon.setVisible(false);
+
         playButton.setDisable(false);
         angleSlider.setDisable(false);
-        timeLabel.setText("Time : 0.00s");
         levelLabel.setText("Level : " + levelSystem.getCurrentLevel().getLevelNumber());
         updateAngleDisplay();
-        redraw();
+        changed();
+    }
+
+    private List<Point2D> clipAtWall(List<Point2D> path) {
+        if (wall == null) {
+            return path;
+        }
+
+        for (int i = 0; i < path.size() - 1; i++) {
+            Point2D a = path.get(i);
+            double len = a.distance(path.get(i + 1));
+
+            if (len == 0) {
+                continue;
+            }
+
+            Point2D dir = path.get(i + 1).subtract(a).multiply(1 / len);
+            double t = wall.intersect(a, dir);
+
+            if (t < len) {
+                List<Point2D> clipped = new ArrayList<>(path.subList(0, i + 1));
+                clipped.add(a.add(dir.multiply(t)));
+                return clipped;
+            }
+        }
+
+        return path;
     }
 
     @FXML
@@ -144,12 +325,9 @@ public class Level1 implements Initializable {
         Point2D direction = new Point2D(Math.cos(radians), -Math.sin(radians));
         Point2D goal = new Point2D(level.getGoalX(), level.getGoalY());
 
-        List<Point2D> fullPath = physicsEngine.simulate(
-                start,
-                direction,
-                level.getInitialMirrors(),
-                level.getInitialBlocks()
-        );
+        List<Point2D> simulated = physicsEngine.simulate(start, direction, allMirrors(), level.getInitialBlocks());
+        List<Point2D> fullPath = clipAtWall(simulated);
+        boolean blocked = fullPath != simulated;
 
         String bounceError = PlacementValidator.validateBounces(physicsEngine);
 
@@ -173,8 +351,11 @@ public class Level1 implements Initializable {
                     public void onFinished(boolean goalReached, double elapsed) {
                         playButton.setDisable(false);
                         angleSlider.setDisable(false);
+
                         if (goalReached) {
                             timeLabel.setText(String.format("Goal! %.2fs", elapsed));
+                        } else if (blocked) {
+                            timeLabel.setText(String.format("Blocked %.2fs", elapsed));
                         } else if (bounceError != null) {
                             showMessage(bounceError);
                         } else {
@@ -182,11 +363,13 @@ public class Level1 implements Initializable {
                         }
                     }
                 });
+
         animator.start();
     }
 
     @FXML
     void resetArea(ActionEvent e) {
+        mirrors.clear();
         resetAngle();
         loadLevelUI();
     }
@@ -214,6 +397,7 @@ public class Level1 implements Initializable {
 
         gc.setStroke(Color.WHITE);
         gc.setLineWidth(1);
+
         for (double g = 0; g <= 600; g += 50) {
             gc.strokeLine(g, 0, g, 600);
             gc.strokeLine(0, g, 600, g);
@@ -224,6 +408,13 @@ public class Level1 implements Initializable {
         gc.fillOval(level.getGoalX() - r, level.getGoalY() - r, 2 * r, 2 * r);
         gc.setFill(Color.RED);
         gc.fillOval(level.getSourceX() - 12, level.getSourceY() - 12, 24, 24);
+
+        gc.setStroke(Color.GRAY);
+        gc.setLineWidth(6);
+
+        for (Mirror m : allMirrors()) {
+            gc.strokeLine(m.getStart().getX(), m.getStart().getY(), m.getEnd().getX(), m.getEnd().getY());
+        }
 
         if (beamPath == null) {
             double radians = Math.toRadians(laserAngle);
