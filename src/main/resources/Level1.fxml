@@ -98,7 +98,6 @@
             <children>
                 <Canvas fx:id="canvas" height="350.0" width="350.0" />
                 <Circle fx:id="photon" fill="YELLOW" mouseTransparent="true" radius="5.0" stroke="BLACK" visible="false" />
-            <Rectangle fx:id="mirror" arcHeight="5.0" arcWidth="5.0" fill="#b0b3b9" height="65.0" layoutX="100.0" layoutY="122.0" stroke="#696565" strokeType="OUTSIDE" width="8.0" />
             <Rectangle fx:id="obstacle" arcHeight="5.0" arcWidth="5.0" fill="#2a2d30" height="100.0" layoutX="159.0" layoutY="45.0" stroke="#484747" strokeType="INSIDE" width="20.0" />
             </children>
         </Pane>

@@ -35,9 +35,15 @@ public class Level1 implements Initializable {
     @FXML private Pane placementPane;
 
     private static final double SCALE = 350.0 / 600.0;
+    private static final String mirrorTool = "StraightMirror";
 
     private static final LevelSystem levelSystem = new LevelSystem();
     private final PhysicsEngine physicsEngine = new PhysicsEngine();
+
+    private final List<Mirror> mirrors = new ArrayList<>();
+    private Obstacle obstacleObject;
+    private Mirror dragged;
+    private Point2D grabOffset;
 
     private List<Point2D> beamPath = null;
     private BeamAnimator animator;
@@ -87,6 +93,82 @@ public class Level1 implements Initializable {
         });
         resetAngle();
         loadLevelUI();
+    }
+
+    private void placeMirror(double x, double y) {
+        if (playButton.isDisable()) {
+            return;
+        }
+
+        Mirror m = new StraightMirror(new Point2D(x, y), 0, 100);
+        String error = PlacementValidator.validateToolAvailable(
+                levelSystem.getCurrentLevel(), mirrorTool, mirrors.size());
+
+        if (error == null) {
+            error = placementError(m, null);
+        }
+
+        if (error != null) {
+            showMessage(error);
+            return;
+        }
+
+        mirrors.add(m);
+        changed();
+    }
+
+    private void replace(Mirror old, Mirror updated) {
+        if (placementError(updated, old) != null) {
+            return;
+        }
+        mirrors.set(mirrors.indexOf(old), updated);
+
+        if (dragged == old) {
+            dragged = updated;
+        }
+        changed();
+    }
+
+    private String placementError(Mirror m, Mirror ignore) {
+        List<Mirror> others = new ArrayList<>(mirrors);
+        others.remove(ignore);
+
+        String error = PlacementValidator.validateMirror(m, levelSystem.getCurrentLevel(), others, List.of());
+        if (error == null && obstacleObject != null) {
+            for (int i = 0; i <= 10; i++) {   // sample points along the mirror
+                Point2D p = m.getStart().add(m.getEnd().subtract(m.getStart()).multiply(i / 10.0));
+                if (Math.abs(p.getX() - obstacleObject.getPosition().getX()) <= obstacleObject.getWidth() / 2
+                        && Math.abs(p.getY() - obstacleObject.getPosition().getY()) <= obstacleObject.getHeight() / 2) {
+                    return "The mirror cannot overlap the obstacle.";
+                }
+            }
+        }
+        return error;
+    }
+
+    private Mirror mirrorAt(Point2D p) {
+        for (Mirror m : mirrors) {
+            Point2D a = m.getStart();
+            Point2D ab = m.getEnd().subtract(a);
+            double t = Math.max(0, Math.min(1, p.subtract(a).dotProduct(ab) / ab.dotProduct(ab)));
+            if (p.distance(a.add(ab.multiply(t))) < 12) {
+                return m;
+            }
+        }
+        return null;
+    }
+
+    private List<Mirror> allMirrors() {
+        List<Mirror> all = new ArrayList<>(levelSystem.getCurrentLevel().getInitialMirrors());
+        all.addAll(mirrors);
+        return all;
+    }
+
+    private void changed() {
+        beamPath = null;
+        photon.setVisible(false);
+        timeLabel.setText("Time : 0.00s");
+        redraw();
     }
 
     private void updateAngleDisplay() {
