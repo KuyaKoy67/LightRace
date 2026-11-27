@@ -52,7 +52,7 @@
                 </Label>
             </children>
         </HBox>
-        <ListView fx:id="ToolBoxListView" maxHeight="290.0" maxWidth="1.7976931348623157E308" prefHeight="263.0" prefWidth="123.0" style="-fx-background-color: #e33030;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <ListView fx:id="toolBoxListView" maxHeight="290.0" maxWidth="1.7976931348623157E308" prefHeight="263.0" prefWidth="123.0" style="-fx-background-color: #e33030;" GridPane.columnIndex="2" GridPane.rowIndex="1">
             <padding>
                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
             </padding>
@@ -98,6 +98,8 @@
             <children>
                 <Canvas fx:id="canvas" height="350.0" width="350.0" />
                 <Circle fx:id="photon" fill="YELLOW" mouseTransparent="true" radius="5.0" stroke="BLACK" visible="false" />
+            <Rectangle fx:id="obstacle" arcHeight="1.0" arcWidth="5.0" fill="#2d2f30" height="152.0" layoutX="165.0" stroke="#5e5959" strokeLineJoin="ROUND" width="20.0" />
+            <Rectangle fx:id="mirror" arcHeight="5.0" arcWidth="5.0" fill="#869eb4" height="79.0" layoutX="74.0" layoutY="64.0" stroke="#666161" strokeType="INSIDE" width="5.0" />
             </children>
         </Pane>
       <Button fx:id="returnButton" maxHeight="32.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#returnToLevelSelect" onMouseEntered="#enterReturnButton" onMouseExited="#exitReturnButton" prefHeight="30.0" prefWidth="122.0" style="-fx-background-color: #82a7dc;" text="RETURN" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4">
